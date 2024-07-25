@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 
-                git url: 'https://github.com/Amaan00101/jenkins-trainig-task.git', branch: 'production',
+                git url: 'https://github.com/Amaan00101/multi-pipeline.git', branch: 'main',
             }
         }
 
