@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 
-                git url: 'https://github.com/Amaan00101/multi-pipeline.git', branch: 'main',
+                git url: 'https://github.com/Amaan00101/multi-pipeline.git', branch: 'main'
             }
         }
 
