@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'git@github.com:Amaan00101/multi-pipeline.git', branch: env.BRANCH_NAME
+                git url: 'https://github.com/faraz9993/my-java-app.git', branch: env.BRANCH_NAME
             }
         }
  
@@ -18,10 +18,19 @@ pipeline {
                 }
             }
         }
-
+ 
+        stage('Run') {
+            steps {
+                script {
+                    echo "Running Java application"
+                    sh 'java -cp target/my-java-app-1.0-SNAPSHOT.jar com.example.App'
+                }
+            }
+        }
+ 
         stage('Deploy') {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 script {
