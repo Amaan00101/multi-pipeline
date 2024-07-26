@@ -1,31 +1,45 @@
 pipeline {
     agent any
-
-    tools {
-        maven 'Maven-3.9.0'
-    }
-
+ 
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Amaan00101/jenkins-trainig-task.git', branch: 'development',
+                git url: 'https://github.com/Amaan00101/multi-pipeline.git', branch: env.BRANCH_NAME
             }
         }
-
-        stage ('maven build') {
+ 
+        stage('Build') {
             steps {
-                    sh "mvn clean install"                        
+                script {
+                    echo "Building production branch: ${env.BRANCH_NAME}"
+                    withMaven(maven: 'Maven-3.9.0') {
+                        sh 'mvn clean package'
+                    }
                 }
             }
-
-        stage('Archive Artifacts') {
+        }
+ 
+        stage('Run') {
             steps {
-                
-                archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+                script {
+                    echo "Running Java application"
+                    sh 'java -cp target/my-java-app-1.0-SNAPSHOT.jar com.example.App'
+                }
+            }
+        }
+ 
+        stage('Deploy') {
+            when {
+                branch 'development'
+            }
+            steps {
+                script {
+                    echo "Deploying to production from branch: ${env.BRANCH_NAME}"
+                }
             }
         }
     }
-
+ 
     post {
         always {
             echo 'Pipeline finished.'
