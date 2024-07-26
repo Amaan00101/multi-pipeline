@@ -8,7 +8,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                
                 git url: 'https://github.com/Amaan00101/jenkins-trainig-task.git', branch: 'production',
             }
         }
