@@ -18,16 +18,7 @@ pipeline {
                 }
             }
         }
- 
-        stage('Run') {
-            steps {
-                script {
-                    echo "Running Java application"
-                    sh 'java -cp target/my-java-app-1.0-SNAPSHOT.jar com.example.App'
-                }
-            }
-        }
- 
+
         stage('Deploy') {
             when {
                 branch 'main'
