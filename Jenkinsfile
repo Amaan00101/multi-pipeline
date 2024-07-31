@@ -1,54 +1,40 @@
 pipeline {
     agent any
- 
+    tools {
+        maven 'Maven-3.9.0'
+    }
     stages {
-        stage('Checkout') {
+        stage ('Checkout') {
             steps {
-                git url: 'https://github.com/faraz9993/my-java-app.git', branch: env.BRANCH_NAME
+                git url: 'https://github.com/Amaan00101/multi-pipeline.git', branch: env.GIT_BRANCH
             }
         }
- 
-        stage('Build') {
+        stage ('Build') {
             steps {
                 script {
-                    echo "Building production branch: ${env.BRANCH_NAME}"
-                    withMaven(maven: 'Maven-3.9.0') {
-                        sh 'mvn clean package'
-                    }
+                    echo "Building Branch -> ${env.GIT_BRANCH}"
+                    sh 'mvn clean package'
                 }
             }
         }
- 
-        stage('Run') {
+        stage ('Test') {
             steps {
                 script {
-                    echo "Running Java application"
-                    sh 'java -cp target/my-java-app-1.0-SNAPSHOT.jar com.example.App'
-                }
-            }
-        }
- 
-        stage('Deploy') {
-            when {
-                branch 'development'
-            }
-            steps {
-                script {
-                    echo "Deploying to production from branch: ${env.BRANCH_NAME}"
+                    echo "Testing Branch -> ${env.GIT_BRANCH}"
+                    sh 'mvn test'
                 }
             }
         }
     }
- 
     post {
         always {
-            echo 'Pipeline finished.'
+            echo 'Pipeline Finished'
         }
         success {
-            echo 'Pipeline succeeded.'
+            echo 'Status : Successfull'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Status : Failed'
         }
     }
 }
